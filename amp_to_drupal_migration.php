@@ -55,7 +55,7 @@ foreach ($results as $key => &$result) {
 }
 
 if(MODE != 'debug'){
-  $file = fopen('./output-double-double-quote-XX.csv', 'w');
+  $file = fopen($output_filename, 'w');
   fwrite($file, $csv);
   fclose($file);
 }else{
