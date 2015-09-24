@@ -1,5 +1,6 @@
 <?php
-//Rename this file settings.php
+//Rename this file to 'settings.php'
+
 
 $output_filename = './output-double-double-quote-XX.csv';
 
