@@ -41,6 +41,8 @@ foreach ($results as $key => &$result) {
 
   $result['body'] = str_replace('"', '""', $result['body']);
   $result['body'] = str_replace('http://cesr.org', '/', $result['body']);
+  $result['body'] = str_replace('http://cesr.live.radicaldesigns.org', '/', $result['body']);
+  $result['body'] = str_replace('https://cesr.live.radicaldesigns.org', '/', $result['body']);
 
   $result['shortdesc'] = str_replace('"', '""', $result['shortdesc']);
   $result['title'] = str_replace('"', '""', $result['title']);
