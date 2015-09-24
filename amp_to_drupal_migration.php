@@ -8,9 +8,9 @@ $database = new Medoo($conSettings);
 
 $results = $database->select(
   'articles',
-  ['id', 'title', 'test(body)', 'publish', 'datecreated', 'shortdesc', 'doc', 'picture', 'custom2(amp_ref_id)', 'custom3(language)'],
+  array('id', 'title', 'test(body)', 'publish', 'datecreated', 'shortdesc', 'doc', 'picture', 'custom2(amp_ref_id)', 'custom3(language)'),
   // ['link[=]' => NULL/* , 'LIMIT' =>20 */ ]
-  [ 'OR' => ['doc[!]' => NULL, 'test[!]' => NULL]  , 'LIMIT' => 300 ]
+  array( 'OR' => array('doc[!]' => NULL, 'test[!]' => NULL), 'LIMIT' => 300 )
 );
 
 
