@@ -49,8 +49,6 @@ foreach ($results as $key => &$result) {
 
 
   $csv .= '"' . $result['id'] . '", "' . utf8_encode($result['title']) . '", "' . utf8_encode($result['body']) . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . utf8_encode($result['shortdesc']) . '", "' . utf8_encode($result['doc']) . '", "' . utf8_encode($result['picture']) . '", "' . utf8_encode($result['amp_ref_id']) . '", "' . utf8_encode($result['language']) . '"' . "\n";
-
-  echo PHP_EOL;
 }
 
 if(DEBUG == FALSE){
