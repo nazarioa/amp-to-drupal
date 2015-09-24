@@ -1,6 +1,6 @@
 <?php
 //Rename this file to 'settings.php'
-
+define('DEBUG', FALSE);
 
 $output_filename = './output-double-double-quote-XX.csv';
 

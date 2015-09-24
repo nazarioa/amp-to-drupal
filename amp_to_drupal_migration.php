@@ -1,6 +1,4 @@
 <?php
-define('MODE', '!debug');
-
 require_once('settings.php');
 require_once('Medoo/medoo.php');
 
@@ -17,7 +15,8 @@ $results = $database->select(
 // die();
 echo PHP_EOL;
 
-if($database->error()[0] != '00000'){
+$error = $database->error();
+if($error[0] != '00000'){
   echo PHP_EOL;
   echo '__Errors Found__';
   echo PHP_EOL;
@@ -54,7 +53,7 @@ foreach ($results as $key => &$result) {
   echo PHP_EOL;
 }
 
-if(MODE != 'debug'){
+if(DEBUG == FALSE){
   $file = fopen($output_filename, 'w');
   fwrite($file, $csv);
   fclose($file);
