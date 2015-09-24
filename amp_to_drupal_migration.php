@@ -16,7 +16,7 @@ $results = $database->select(
     )
   ),
   array(
-    'articles.id', 'articles.title', 'articles.test(body)', 'articles.publish', 'articles.datecreated', 'articles.shortdesc', 'articles.doc', 'articles.picture', 'articles.custom2(amp_ref_id)', 'articles.custom3(language)', 'tags.name'
+    'articles.id', 'articles.title', 'articles.test(body)', 'articles.publish', 'articles.datecreated', 'articles.shortdesc', 'articles.doc', 'articles.picture', 'articles.custom2(amp_ref_id)', 'articles.custom3(language)', 'tags.name(tag_name)'
   ),
   array(
     'AND' => array(
@@ -45,7 +45,7 @@ if($error[0] != '00000'){
 
 
 $csv = '';
-$csv .= 'id, title, body, publish, datecreated, shortdesc, doc, picture, amp_ref_id, language' . "\n";
+$csv .= 'id, title, body, publish, datecreated, shortdesc, doc, picture, amp_ref_id, language, tag_name' . "\n";
 
 foreach ($results as $key => &$result) {
 
@@ -69,7 +69,7 @@ foreach ($results as $key => &$result) {
   $result['doc'] = str_replace(' ', '_', $result['doc']);
 
 
-  $csv .= '"' . $result['id'] . '", "' . utf8_encode($result['title']) . '", "' . utf8_encode($result['body']) . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . utf8_encode($result['shortdesc']) . '", "' . utf8_encode($result['doc']) . '", "' . utf8_encode($result['picture']) . '", "' . utf8_encode($result['amp_ref_id']) . '", "' . utf8_encode($result['language']) . '"' . "\n";
+  $csv .= '"' . $result['id'] . '", "' . utf8_encode($result['title']) . '", "' . utf8_encode($result['body']) . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . utf8_encode($result['shortdesc']) . '", "' . utf8_encode($result['doc']) . '", "' . utf8_encode($result['picture']) . '", "' . utf8_encode($result['amp_ref_id']) . '", "' . utf8_encode($result['language']) . '", "' . utf8_encode($result['tag_name']) . '"' . "\n";
 }
 
 if(DEBUG == FALSE){
