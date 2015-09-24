@@ -1,0 +1,4 @@
+
+-- This bit of sql updates the node to match the language brought in from amp
+
+UPDATE node SET language = 'en' WHERE node.id IN (SELECT entity_id FROM field_data_field_amp_language WHERE field_amp_language_value = '%Engli%')
