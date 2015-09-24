@@ -10,7 +10,7 @@ $results = $database->select(
   'articles',
   ['id', 'title', 'test(body)', 'publish', 'datecreated', 'shortdesc', 'doc', 'picture', 'custom2(amp_ref_id)', 'custom3(language)'],
   // ['link[=]' => NULL/* , 'LIMIT' =>20 */ ]
-  [ 'OR' => ['doc[!]' => NULL, 'test[!]' => NULL]  , 'LIMIT' =>50 ]
+  [ 'OR' => ['doc[!]' => NULL, 'test[!]' => NULL]  , 'LIMIT' => 300 ]
 );
 
 
@@ -37,17 +37,25 @@ foreach ($results as $key => &$result) {
   }
 
   if( strlen($result['title']) > 125 ){
-    $result['title'] = substr($result['title'], 0, 125).'...';
+    $result['title'] = substr(trim($result['title']), 0, 125).'...';
   }
 
+  $result['body'] = str_replace('"', '""', $result['body']);
+  $result['body'] = str_replace('http://cesr.org', '/', $result['body']);
 
-  $csv .= '"' . $result['id'] . '", "' . addslashes(utf8_encode(trim($result['title']))) . '", "' . addslashes(utf8_encode($result['body'])) . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . addslashes(utf8_encode($result['shortdesc'])) . '", "' . addslashes(utf8_encode($result['doc'])) . '", "' . addslashes(utf8_encode($result['picture'])) . '", "' . $result['amp_ref_id'] . '", "' . addslashes($result['language']) . '"' . "\n";
+  $result['shortdesc'] = str_replace('"', '""', $result['shortdesc']);
+  $result['title'] = str_replace('"', '""', $result['title']);
+  $result['picture'] = str_replace(' ', '_', $result['picture']);
+  $result['doc'] = str_replace(' ', '_', $result['doc']);
+
+
+  $csv .= '"' . $result['id'] . '", "' . utf8_encode($result['title']) . '", "' . utf8_encode($result['body']) . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . utf8_encode($result['shortdesc']) . '", "' . utf8_encode($result['doc']) . '", "' . utf8_encode($result['picture']) . '", "' . utf8_encode($result['amp_ref_id']) . '", "' . utf8_encode($result['language']) . '"' . "\n";
 
   echo PHP_EOL;
 }
 
 if(MODE != 'debug'){
-  $file = fopen('./output.csv', 'w');
+  $file = fopen('./output-double-double-quote-XX.csv', 'w');
   fwrite($file, $csv);
   fclose($file);
 }else{
