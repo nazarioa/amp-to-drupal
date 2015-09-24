@@ -6,20 +6,38 @@ $database = new Medoo($conSettings);
 
 $results = $database->select(
   'articles',
-  array('id', 'title', 'test(body)', 'publish', 'datecreated', 'shortdesc', 'doc', 'picture', 'custom2(amp_ref_id)', 'custom3(language)'),
-  // ['link[=]' => NULL/* , 'LIMIT' =>20 */ ]
-  array( 'OR' => array('doc[!]' => NULL, 'test[!]' => NULL), 'LIMIT' => 300 )
+  //LEFT JOIN tags_items ON tags_items.item_id = articles.id
+  array(
+    '[>]tags_items' => array(
+      'articles.id' => 'item_id'
+    ),
+    '[>]tags' => array(
+      'tags_items.tag_id' => 'id'
+    )
+  ),
+  array(
+    'articles.id', 'articles.title', 'articles.test(body)', 'articles.publish', 'articles.datecreated', 'articles.shortdesc', 'articles.doc', 'articles.picture', 'articles.custom2(amp_ref_id)', 'articles.custom3(language)', 'tags.name'
+  ),
+  array(
+    'AND' => array(
+      'OR' => array(
+        'doc[!]' => NULL,
+        'test[!]' => NULL
+      ),
+      'AND' => array(
+        'tags_items.item_type' => 'article'
+      )
+    ),
+    'LIMIT' => 300,
+    'GROUP' => 'articles.id'
+  )
 );
 
-
-// die();
-echo PHP_EOL;
 
 $error = $database->error();
 if($error[0] != '00000'){
   echo PHP_EOL;
-  echo '__Errors Found__';
-  echo PHP_EOL;
+  echo '__SQL Errors Found__' . PHP_EOL;
   var_dump($database->error());
   die();
   echo PHP_EOL;
@@ -41,6 +59,7 @@ foreach ($results as $key => &$result) {
 
   $result['body'] = str_replace('"', '""', $result['body']);
   $result['body'] = str_replace('http://cesr.org', '/', $result['body']);
+  $result['body'] = str_replace('https://cesr.org', '/', $result['body']);
   $result['body'] = str_replace('http://cesr.live.radicaldesigns.org', '/', $result['body']);
   $result['body'] = str_replace('https://cesr.live.radicaldesigns.org', '/', $result['body']);
 
@@ -57,6 +76,7 @@ if(DEBUG == FALSE){
   $file = fopen($output_filename, 'w');
   fwrite($file, $csv);
   fclose($file);
+  echo 'Done.' . PHP_EOL . 'Find the file at ' . __DIR__ . '/' . $output_filename;
 }else{
   echo $csv;
 }
