@@ -1,2 +1,4 @@
 settings*.php
 .DS_Store
+test.csv
+output.csv
