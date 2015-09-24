@@ -9,9 +9,12 @@ $database = new Medoo($conSettings);
 $results = $database->select(
   'articles',
   ['id', 'title', 'test(body)', 'publish', 'datecreated', 'shortdesc', 'doc', 'picture', 'custom2(amp_ref_id)', 'custom3(language)'],
-  [ 'OR' => ['AND' => ['link[=]' => NULL, 'OR' => ['doc[!]' => NULL, 'test[!]' => NULL] ] ], 'LIMIT' => 100 ]
+  // ['link[=]' => NULL/* , 'LIMIT' =>20 */ ]
+  [ 'OR' => ['doc[!]' => NULL, 'test[!]' => NULL]  , 'LIMIT' =>200 ]
 );
 
+
+// die();
 echo PHP_EOL;
 
 if($database->error()[0] != '00000'){
@@ -33,8 +36,14 @@ foreach ($results as $key => &$result) {
     $result['datecreated'] = '1999-01-01 00:00:01';
   }
 
+  if( strlen($result['title']) > 125 ){
+    $result['title'] = substr($result['title'], 0, 125).'...';
+  }
 
-  $csv .= $result['id'] . ', ' . addslashes($result['title']) . ', ' . addslashes($result['body']) . ', ' . $result['publish'] . ', ' . $result['datecreated'] . ', ' . addslashes($result['shortdesc']) . ', ' . addslashes($result['doc']) . ', ' . addslashes($result['picture']) . ', ' . $result['amp_ref_id'] . ', ' . addslashes($result['language']) . "\n";
+  $result['body'] = str_replace('\'', '"', $result['body'])
+
+
+  $csv .= '"' . $result['id'] . '", "' . addslashes(utf8_encode(trim($result['title']))) . '", "' . addslashes(utf8_encode($result['body'])) . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . addslashes(utf8_encode($result['shortdesc'])) . '", "' . addslashes(utf8_encode($result['doc'])) . '", "' . addslashes(utf8_encode($result['picture'])) . '", "' . $result['amp_ref_id'] . '", "' . addslashes($result['language']) . '"' . "\n";
 
   echo PHP_EOL;
 }
