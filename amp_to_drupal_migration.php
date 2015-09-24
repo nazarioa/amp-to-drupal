@@ -4,34 +4,7 @@ require_once('Medoo/medoo.php');
 
 $database = new Medoo($conSettings);
 
-$results = $database->select(
-  'articles',
-  //LEFT JOIN tags_items ON tags_items.item_id = articles.id
-  array(
-    '[>]tags_items' => array(
-      'articles.id' => 'item_id'
-    ),
-    '[>]tags' => array(
-      'tags_items.tag_id' => 'id'
-    )
-  ),
-  array(
-    'articles.id', 'articles.title', 'articles.test(body)', 'articles.publish', 'articles.datecreated', 'articles.shortdesc', 'articles.doc', 'articles.picture', 'articles.custom2(amp_ref_id)', 'articles.custom3(language)', 'tags.name(tag_name)'
-  ),
-  array(
-    'AND' => array(
-      'OR' => array(
-        'doc[!]' => NULL,
-        'test[!]' => NULL
-      ),
-      'AND' => array(
-        'tags_items.item_type' => 'article'
-      )
-    ),
-    'LIMIT' => 300,
-    'GROUP' => 'articles.id'
-  )
-);
+$results = $database->query("SELECT articles.id, articles.title, articles.test AS body, articles.publish, articles.datecreated, articles.shortdesc, articles.doc, articles.picture, articles.custom2 AS amp_ref_id, articles.custom3 AS language, GROUP_CONCAT(tags.name) AS tag_name FROM articles LEFT JOIN tags_items ON tags_items.item_id = articles.id LEFT JOIN tags ON tags.id = tags_items.tag_id WHERE tags_items.item_type = 'article' GROUP BY articles.id")->fetchAll();
 
 
 $error = $database->error();
@@ -45,9 +18,9 @@ if($error[0] != '00000'){
 
 
 $csv = '';
-$csv .= 'id, title, body, publish, datecreated, shortdesc, doc, picture, amp_ref_id, language, tag_name' . "\n";
+$csv .= 'id, title, body, publish, datecreated, shortdesc, doc, picture, amp_ref_id, language, tag_names' . "\n";
 
-foreach ($results as $key => &$result) {
+foreach ($results as $result) {
 
   if($result['datecreated'] == '0000-00-00 00:00:00'){
     $result['datecreated'] = '1999-01-01 00:00:01';
