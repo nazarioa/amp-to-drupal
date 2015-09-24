@@ -10,7 +10,7 @@ $results = $database->select(
   'articles',
   ['id', 'title', 'test(body)', 'publish', 'datecreated', 'shortdesc', 'doc', 'picture', 'custom2(amp_ref_id)', 'custom3(language)'],
   // ['link[=]' => NULL/* , 'LIMIT' =>20 */ ]
-  [ 'OR' => ['doc[!]' => NULL, 'test[!]' => NULL]  , 'LIMIT' =>200 ]
+  [ 'OR' => ['doc[!]' => NULL, 'test[!]' => NULL]  , 'LIMIT' =>50 ]
 );
 
 
@@ -39,8 +39,6 @@ foreach ($results as $key => &$result) {
   if( strlen($result['title']) > 125 ){
     $result['title'] = substr($result['title'], 0, 125).'...';
   }
-
-  $result['body'] = str_replace('\'', '"', $result['body'])
 
 
   $csv .= '"' . $result['id'] . '", "' . addslashes(utf8_encode(trim($result['title']))) . '", "' . addslashes(utf8_encode($result['body'])) . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . addslashes(utf8_encode($result['shortdesc'])) . '", "' . addslashes(utf8_encode($result['doc'])) . '", "' . addslashes(utf8_encode($result['picture'])) . '", "' . $result['amp_ref_id'] . '", "' . addslashes($result['language']) . '"' . "\n";
