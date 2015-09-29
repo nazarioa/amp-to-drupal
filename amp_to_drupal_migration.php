@@ -57,6 +57,8 @@ if(DEBUG == FALSE){
   $file = fopen($output_filename, 'w');
   fwrite($file, $csv);
   fclose($file);
+  echo PHP_EOL . PHP_EOL;
+  echo '-------------------';
   echo 'Done.' . PHP_EOL . 'Find the file at ' . __DIR__ . '/' . $output_filename;
 }else{
   echo $csv;
