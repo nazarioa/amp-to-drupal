@@ -4,7 +4,9 @@ require_once('Medoo/medoo.php');
 
 $database = new Medoo($conSettings);
 
-$hardLinksToRoot = array('http://cesr.org', 'https://cesr.org', 'http://cesr.live.radicaldesigns.org', 'https://cesr.live.radicaldesigns.org');
+$hardLinksToRoot = array('http://www.cesr.org', 'http://cesr.org', 'https://www.cesr.org', 'https://cesr.org', 'http://cesr.live.radicaldesigns.org', 'https://cesr.live.radicaldesigns.org', );
+$pathForAditionalFiles['doc'] = 'amp/';
+$pathForAditionalFiles['img'] = 'amp/';
 $specialChractersToUnderscore = array(' ');
 $whitespaceChractersToNull= array("\t", "\n", "\r", "\0", "\r\n", "\x0B", "\x80", '\x82', '\x83', "\x84", "\x93", "\x9d");
 
@@ -25,7 +27,7 @@ if($error[0] != '00000'){
 $csv = '';
 
 // First row is the header row
-$csv .= 'id, title, body, publish, datecreated, shortdesc, doc, picture, amp_ref_id, language, tag_names' . "\n";
+$csv .= 'id, title, body, publish, datecreated, shortdesc, doc_name, doc_path, doc_description, img_name, img_path, img_title, amp_ref_id, language, tag_names' . "\n";
 
 foreach ($results as $result) {
 
@@ -53,19 +55,36 @@ foreach ($results as $result) {
   $result['picture'] = str_replace($whitespaceChractersToNull, '', $result['picture']);
   $result['doc'] = str_replace($whitespaceChractersToNull, '', $result['doc']);
 
-  // Replace hardlinks (things with http*://) to be /
-  $result['body'] = str_replace($hardLinksToRoot, '/', $result['body']);
+  // Replace hardlinks (things with http*://) with nothing so as to make relative paths
+  $result['body'] = str_replace($hardLinksToRoot, '', $result['body']);
 
   // Replace 'SepcialCharactersToUnderscores' for doc and pictures field
   $result['picture'] = str_replace($specialChractersToUnderscore, '_', $result['picture']);
   $result['doc'] = str_replace($specialChractersToUnderscore, '_', $result['doc']);
+
+  // remove absolute paths on src attribute
+  $result['body'] = str_replace('src="/', 'src = "', $result['body']);
+  $result['shortdesc'] = str_replace('src="/', 'src = "', $result['shortdesc']);
+  $result['shortdesc'] = str_replace('src="/', 'src = "', $result['shortdesc']);
 
   // Escaping Double-Quotes
   $result['shortdesc'] = str_replace('"', '""', $result['shortdesc']);
   $result['title'] = str_replace('"', '""', $result['title']);
   $result['body'] = str_replace('"', '""', $result['body']);
 
-  $csv .= '"' . $result['id'] . '", "' . $result['title'] . '", "' . $result['body'] . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . $result['shortdesc'] . '", "' . $result['doc'] . '", "' . $result['picture'] . '", "' . $result['amp_ref_id'] . '", "' . $result['language'] . '", "' . $result['tag_name'] . '"' . "\n";
+  // Add pathname to images
+  $doc_path = '';
+  if( $result['doc'] !== '' ){
+    $doc_path = $pathForAditionalFiles['doc'] . $result['doc'];
+  }
+
+  $img_path = '';
+  if( $result['picture'] !== '' ){
+    $img_path = $pathForAditionalFiles['img'] . $result['picture'];
+  }
+
+  // build the row and add it to the csv
+  $csv .= '"' . $result['id'] . '", "' . $result['title'] . '", "' . $result['body'] . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . $result['shortdesc'] . '", "' . $result['doc'] . '", "' . $doc_path . '", "' . $result['doc'] . '", "' . $result['picture'] . '", "' . $img_path . '", "' . $result['picture'] . '", "' . $result['amp_ref_id'] . '", "' . $result['language'] . '", "' . $result['tag_name'] . '"' . "\n";
 }
 
 if(DEBUG == FALSE){
