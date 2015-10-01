@@ -8,7 +8,8 @@ $hardLinksToRoot = array('http://cesr.org', 'https://cesr.org', 'http://cesr.liv
 $specialChractersToUnderscore = array(' ');
 $whitespaceChractersToNull= array("\t", "\n", "\r", "\0", "\r\n", "\x0B", "\x80", '\x82', '\x83', "\x84", "\x93", "\x9d");
 
-$results = $database->query("SELECT articles.id, articles.title, articles.test AS body, articles.publish, articles.datecreated, articles.shortdesc, articles.doc, articles.picture, articles.custom2 AS amp_ref_id, articles.custom3 AS language, GROUP_CONCAT(tags.name) AS tag_name FROM articles LEFT JOIN tags_items ON tags_items.item_id = articles.id LEFT JOIN tags ON tags.id = tags_items.tag_id WHERE tags_items.item_type = 'article' GROUP BY articles.id")->fetchAll();
+$results = $database->query("SELECT articles.id, articles.title, articles.test AS body, articles.publish, articles.datecreated, articles.shortdesc, articles.doc, articles.picture, articles.custom2 AS amp_ref_id, articles.custom3 AS language, GROUP_CONCAT(tags.name) AS tag_name FROM articles LEFT JOIN tags_items ON tags_items.item_id = articles.id LEFT JOIN tags ON tags.id = tags_items.tag_id GROUP BY articles.id")->fetchAll();
+// removed WHERE tags_items.item_type = 'article' from the where clause
 
 
 $error = $database->error();
