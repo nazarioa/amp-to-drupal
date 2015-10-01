@@ -5,8 +5,8 @@ require_once('Medoo/medoo.php');
 $database = new Medoo($conSettings);
 
 $hardLinksToRoot = array('http://www.cesr.org', 'http://cesr.org', 'https://www.cesr.org', 'https://cesr.org', 'http://cesr.live.radicaldesigns.org', 'https://cesr.live.radicaldesigns.org', );
-$pathForAditionalFiles['doc'] = 'amp/';
-$pathForAditionalFiles['img'] = 'amp/';
+$pathForAditionalFiles['doc'] = 'public://amp/doc/';
+$pathForAditionalFiles['img'] = 'public://amp/img/';
 $specialChractersToUnderscore = array(' ');
 $whitespaceChractersToNull= array("\t", "\n", "\r", "\0", "\r\n", "\x0B", "\x80", '\x82', '\x83', "\x84", "\x93", "\x9d");
 
