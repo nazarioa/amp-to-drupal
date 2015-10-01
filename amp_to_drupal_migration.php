@@ -39,7 +39,7 @@ foreach ($results as $result) {
   }
 
   // Convert what is assumed to be ANSI to UTF-8.
-  $result['title'] = mb_convert_encoding($result['title'], 'ANSI', 'UTF-8');
+  $result['title'] = mb_convert_encoding($result['title'], 'ASCII', 'UTF-8');
   $result['body'] = mb_convert_encoding($result['body'], 'ASCII', 'UTF-8');
   $result['shortdesc'] = mb_convert_encoding($result['shortdesc'], 'ASCII', 'UTF-8');
   $result['picture'] = mb_convert_encoding($result['picture'], 'ASCII', 'UTF-8');
