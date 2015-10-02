@@ -5,8 +5,8 @@ require_once('Medoo/medoo.php');
 $database = new Medoo($conSettings);
 
 $hardLinksToRoot = array('http://www.cesr.org', 'http://cesr.org', 'https://www.cesr.org', 'https://cesr.org', 'http://cesr.live.radicaldesigns.org', 'https://cesr.live.radicaldesigns.org', );
-$pathForAditionalFiles['doc'] = 'public://amp/doc/';
-$pathForAditionalFiles['img'] = 'public://amp/img/';
+$pathForAditionalFiles['doc'] = 'public://amp_migration/doc/';
+$pathForAditionalFiles['img'] = 'public://amp_migration/img/';
 $specialChractersToUnderscore = array(' ');
 $whitespaceChractersToNull= array("\t", "\n", "\r", "\0", "\r\n", "\x0B", "\x80", '\x82', '\x83', "\x84", "\x93", "\x9d");
 
@@ -27,7 +27,7 @@ if($error[0] != '00000'){
 $csv = '';
 
 // First row is the header row
-$csv .= 'id, title, body, publish, datecreated, shortdesc, doc_name, doc_path, doc_description, img_name, img_path, img_title, amp_ref_id, language, tag_names' . "\n";
+$csv .= 'id, title, body, publish, datecreated, shortdesc, doc_path, doc_description, img_name, img_path, img_title, amp_ref_id, language, tag_names' . "\n";
 
 foreach ($results as $result) {
 
@@ -84,7 +84,7 @@ foreach ($results as $result) {
   }
 
   // build the row and add it to the csv
-  $csv .= '"' . $result['id'] . '", "' . $result['title'] . '", "' . $result['body'] . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . $result['shortdesc'] . '", "' . $result['doc'] . '", "' . $doc_path . '", "' . $result['doc'] . '", "' . $result['picture'] . '", "' . $img_path . '", "' . $result['picture'] . '", "' . $result['amp_ref_id'] . '", "' . $result['language'] . '", "' . $result['tag_name'] . '"' . "\n";
+  $csv .= '"' . $result['id'] . '", "' . $result['title'] . '", "' . $result['body'] . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . $result['shortdesc'] . '", "' . $doc_path . '", "' . $result['doc'] . '", "' . $result['picture'] . '", "' . $img_path . '", "' . $result['picture'] . '", "' . $result['amp_ref_id'] . '", "' . $result['language'] . '", "' . $result['tag_name'] . '"' . "\n";
 }
 
 if(DEBUG == FALSE){
