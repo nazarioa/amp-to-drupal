@@ -62,6 +62,10 @@ foreach ($results as $result) {
   $result['picture'] = str_replace($specialChractersToUnderscore, '_', $result['picture']);
   $result['doc'] = str_replace($specialChractersToUnderscore, '_', $result['doc']);
 
+  // remoave all interspcial dots (.) except the last one.
+  $result['picture'] = preg_replace('/\.(?=.*\.)/', '', $result['picture']);
+  $result['doc'] = preg_replace('/\.(?=.*\.)/', '', $result['doc']);
+
   // remove absolute paths on src attribute
   $result['body'] = str_replace('src="/', 'src = "', $result['body']);
   $result['shortdesc'] = str_replace('src="/', 'src = "', $result['shortdesc']);
