@@ -7,7 +7,7 @@ $database = new Medoo($conSettings);
 $hardLinksToRoot = array('http://www.cesr.org', 'http://cesr.org', 'https://www.cesr.org', 'https://cesr.org', 'http://cesr.live.radicaldesigns.org', 'https://cesr.live.radicaldesigns.org', );
 $pathForAditionalFiles['doc'] = 'public://amp_migration/doc/';
 $pathForAditionalFiles['img'] = 'public://amp_migration/img/';
-$specialChractersToUnderscore = array(' ');
+$specialChractersToUnderscore = array(' ', '%20');
 $whitespaceChractersToNull= array("\t", "\n", "\r", "\0", "\r\n", "\x0B", "\x80", '\x82', '\x83', "\x84", "\x93", "\x9d");
 
 $results = $database->query("SELECT articles.id, articles.title, articles.test AS body, articles.publish, articles.datecreated, articles.shortdesc, articles.doc, articles.picture, articles.custom2 AS amp_ref_id, articles.custom3 AS language, GROUP_CONCAT(tags.name) AS tag_name FROM articles LEFT JOIN tags_items ON tags_items.item_id = articles.id LEFT JOIN tags ON tags.id = tags_items.tag_id GROUP BY articles.id")->fetchAll();
