@@ -88,7 +88,7 @@ foreach ($results as $result) {
   }
 
   // build the row and add it to the csv
-  $csv .= '"' . $result['id'] . '", "' . $result['title'] . '", "' . $result['body'] . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . $result['shortdesc'] . '", "' . $doc_path . '", "' . $result['doc'] . '", "' . $result['picture'] . '", "' . $img_path . '", "' . $result['picture'] . '", "' . $result['amp_ref_id'] . '", "' . $result['language'] . '", "' . $result['tag_name'] . '"' . "\n";
+  $csv .= '"' . $result['id'] . '", "' . $result['title'] . '", "' . $result['body'] . '", "' . $result['publish'] . '", "' . $result['datecreated'] . '", "' . $result['shortdesc'] . '", "' .  $result['doc'] . '", "' . $doc_path . '", "' . $result['picture'] . '", "' . $img_path . '", "' . $result['picture'] . '", "' . $result['amp_ref_id'] . '", "' . $result['language'] . '", "' . $result['tag_name'] . '"' . "\n";
 }
 
 if(DEBUG == FALSE){
